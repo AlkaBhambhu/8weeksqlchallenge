@@ -75,12 +75,12 @@ FROM CTE
 WHERE ranks = 1;
 
 -- 4.What is the most purchased item on the menu and how many times was it purchased by all customers?
-SELECT  s.customer_id, m.product_name,count(1) -- (s.product_id) AS count_total
+SELECT  s.customer_id, m.product_name,count(*) -- (s.product_id) AS count_total
 FROM sales s
 JOIN menu m
 ON s.product_id = m.product_id
 GROUP BY m.product_name, s.customer_id
-ORDER BY count(1) desc;
+ORDER BY count(*) desc;
 
 -- 5.Which item was the most popular for each customer?
 WITH CTE AS(
