@@ -31,8 +31,7 @@ VALUES
 CREATE TABLE menu (
   product_id INTEGER,
   product_name VARCHAR(5),
-  price INTEGER
-);
+  price INTEGER);
 
 INSERT INTO menu
   (product_id, product_name, price)
@@ -44,8 +43,7 @@ VALUES
 
 CREATE TABLE members (
   customer_id VARCHAR(1),
-  join_date DATE
-);
+  join_date DATE);
 
 INSERT INTO members
   (customer_id, join_date)
@@ -68,7 +66,7 @@ GROUP BY customer_id;
 
 -- 3. What was the first item from the menu purchased by each customer?
 WITH CTE AS (
-		SELECT s.customer_id,m.product_name, rank() OVER (PARTITION BY s.customer_id ORDER BY s.order_date) AS ranks
+	SELECT s.customer_id,m.product_name, rank() OVER (PARTITION BY s.customer_id ORDER BY s.order_date) AS ranks
         FROM sales s
         JOIN menu m
         ON s.product_id = m.product_id)
@@ -82,12 +80,11 @@ FROM sales s
 JOIN menu m
 ON s.product_id = m.product_id
 GROUP BY m.product_name, s.customer_id
-ORDER BY count(1) desc
-;
+ORDER BY count(1) desc;
 
 -- 5.Which item was the most popular for each customer?
 WITH CTE AS(
-		SELECT s.customer_id, s.product_id, COUNT(s.product_id)AS total_count, RANK() OVER (PARTITION BY customer_id ORDER BY COUNT(product_id) DESC) AS ranks
+	SELECT s.customer_id, s.product_id, COUNT(s.product_id)AS total_count, RANK() OVER (PARTITION BY customer_id ORDER BY COUNT(product_id) DESC) AS ranks
         FROM sales s
         GROUP BY customer_id, product_id)
 SELECT CTE.customer_id, m.product_name, total_count
@@ -98,7 +95,7 @@ WHERE ranks = 1;
 
 -- 6.Which item was purchased first by the customer after they became a member?
 WITH CTE AS (
-		SELECT s.customer_id,s.order_date, m.product_name, rank() OVER (PARTITION BY customer_id ORDER BY order_date) AS ranks
+	SELECT s.customer_id,s.order_date, m.product_name, rank() OVER (PARTITION BY customer_id ORDER BY order_date) AS ranks
         FROM menu m
         JOIN sales s
 			ON m.product_id = s.product_id
@@ -111,7 +108,7 @@ WHERE CTE.ranks = 1;
 
 -- 7. Which item was purchased just before the customer became a member?
 WITH CTE AS (
-		SELECT s.customer_id,s.order_date, m.product_name, rank() OVER (PARTITION BY customer_id ORDER BY order_date DESC) AS ranks
+	SELECT s.customer_id,s.order_date, m.product_name, rank() OVER (PARTITION BY customer_id ORDER BY order_date DESC) AS ranks
         FROM menu m
         JOIN sales s
 			ON m.product_id = s.product_id
