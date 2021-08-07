@@ -27,7 +27,7 @@ WHERE plan_id = 4;
 
 -- How many customers have churned straight after their initial free trial - what percentage is this rounded to the nearest whole number?
 WITH CTE AS(
-			SELECT s.customer_id,s.plan_id, LAG(plan_id,1) OVER (PARTITION BY s.customer_id ORDER BY s.start_date) As Previous_plan
+	    SELECT s.customer_id,s.plan_id, LAG(plan_id,1) OVER (PARTITION BY s.customer_id ORDER BY s.start_date) As Previous_plan
             FROM subscriptions s)
 SELECT Count(DISTINCT customer_id) AS 'Churn_total', 
 	   CONCAT(ROUND(Count(DISTINCT customer_id)*100/ (SELECT count(DISTINCT customer_id) FROM CTE),0), '%') AS percentage 
@@ -36,7 +36,7 @@ WHERE previous_plan = 0 AND plan_id = 4;
 
 -- What is the number and percentage of customer plans after their initial free trial?
 WITH CTE AS(
-			SELECT s.customer_id,s.plan_id, LAG(plan_id,1) OVER (PARTITION BY s.customer_id ORDER BY s.start_date) As Previous_plan
+	    SELECT s.customer_id,s.plan_id, LAG(plan_id,1) OVER (PARTITION BY s.customer_id ORDER BY s.start_date) As Previous_plan
             FROM subscriptions s)
 SELECT Count(DISTINCT customer_id) AS 'Success_total', 
 	   CONCAT(ROUND(Count(DISTINCT customer_id)*100/ (SELECT count(DISTINCT customer_id) FROM CTE),0), '%') AS percentage 
@@ -48,7 +48,7 @@ WHERE previous_plan = 0 AND plan_id IN (1,2,3);
 
 -- How many customers have upgraded to an annual plan in 2020?
 WITH CTE AS(
-			SELECT s.customer_id,s.plan_id,s.start_date, LAG(plan_id,1) OVER (PARTITION BY s.customer_id ORDER BY s.start_date) As Previous_plan
+	    SELECT s.customer_id,s.plan_id,s.start_date, LAG(plan_id,1) OVER (PARTITION BY s.customer_id ORDER BY s.start_date) As Previous_plan
             FROM subscriptions s)
 SELECT Count(DISTINCT customer_id) AS Upgrade_total, 
 	   CONCAT(ROUND(Count(DISTINCT customer_id)*100/ (SELECT count(DISTINCT customer_id) FROM CTE),0), '%') AS percentage 
@@ -57,7 +57,7 @@ WHERE previous_plan IN (0,1,2) AND plan_id = 3 AND EXTRACT(YEAR FROM start_date)
 
 -- How many days on average does it take for a customer to an annual plan from the day they join Foodie-Fi?/not sure
 WITH CTE AS(
-			SELECT customer_id, start_date AS join_date
+	    SELECT customer_id, start_date AS join_date
             FROM subscriptions 
             WHERE plan_id in (0,1,2)),
 	CTE2 AS(
@@ -71,7 +71,7 @@ ON c1.customer_id = c2.customer_id;
 
 -- How many customers downgraded from a pro monthly to a basic monthly plan in 2020?
 WITH CTE AS (
-			 SELECT customer_id,start_date,plan_id,LAG(plan_id,1) OVER (PARTITION BY customer_id ORDER BY start_date) AS basic_monthly
+	     SELECT customer_id,start_date,plan_id,LAG(plan_id,1) OVER (PARTITION BY customer_id ORDER BY start_date) AS basic_monthly
              FROM subscriptions)
 SELECT COUNT(customer_id) 
 FROM CTE
