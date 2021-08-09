@@ -18,7 +18,7 @@ ORDER BY region_id;
 
 -- 4.How many days on average are customers reallocated to a different node?
 WITH CTE AS(
-		SELECT *, LEAD(start_date,1) OVER (PARTITION BY customer_id ORDER BY start_date) AS Next_Date
+	SELECT *, LEAD(start_date,1) OVER (PARTITION BY customer_id ORDER BY start_date) AS Next_Date
         FROM customer_nodes
         ORDER BY customer_id)
 SELECT ROUND(AVG(DATEDIFF(Next_date,start_date)))
@@ -38,15 +38,15 @@ WHERE txn_type = 'deposit';
 
 -- For each month-how many Data Bank customers make more than 1 deposit and either 1 purchase or 1 withdrawal in a single month?
 WITH CTE_DEPOSIT AS (SELECT EXTRACT(MONTH FROM txn_date) AS Month_num, customer_id, COUNT(txn_type) AS deposits
-					 FROM customer_transactions
+		     FROM customer_transactions
                      WHERE txn_type = 'deposit'
                      GROUP BY Month_num , customer_id),
 	CTE_PURCHASE AS (SELECT EXTRACT(MONTH FROM txn_date) AS Month_num, customer_id, COUNT(txn_type) AS purchases
-					 FROM customer_transactions
+		     FROM customer_transactions
                      WHERE txn_type = 'purchase'
                      GROUP BY Month_num , customer_id),
 	CTE_WITHDRAWAL AS (SELECT EXTRACT(MONTH FROM txn_date) AS Month_num, customer_id, COUNT(txn_type) AS withdrawals
-					 FROM customer_transactions
+		     FROM customer_transactions
                      WHERE txn_type = 'withdrawal'
                      GROUP BY Month_num , customer_id)
 SELECT d.Month_num, COUNT(d.customer_id) AS total_count
@@ -64,9 +64,9 @@ ORDER BY Month_num;
 
 WITH CTE AS 
     (SELECT EXTRACT(MONTH FROM txn_date)AS Month_num, Customer_id,  
-	        CASE WHEN txn_type = 'deposit' THEN txn_amount 
-			ELSE -txn_amount
-			END AS amount
+	    CASE WHEN txn_type = 'deposit' THEN txn_amount 
+	    ELSE -txn_amount
+	    END AS amount
 	 FROM customer_transactions)
 SELECT  customer_id,Month_num, SUM(amount) AS balance
 FROM CTE
