@@ -28,14 +28,14 @@ ADD demographic varchar(10)
 
 UPDATE weekly_sales 
 SET age_band = (
-			CASE WHEN segment LIKE '_1' THEN 'Young Adults'
-                 WHEN segment LIKE '_2' THEN 'Middle Aged'
-                 WHEN segment LIKE '_3' OR segment LIKE '_4' THEN 'Retirees'
-			END),
-	demographic = (
-			 CASE WHEN segment LIKE 'C_' THEN 'Couples'
-                  WHEN segment LIKE 'F_' THEN 'Families'
-			 END);
+		CASE WHEN segment LIKE '_1' THEN 'Young Adults'
+                WHEN segment LIKE '_2' THEN 'Middle Aged'
+                WHEN segment LIKE '_3' OR segment LIKE '_4' THEN 'Retirees'
+		END),
+   demographic = (
+		CASE WHEN segment LIKE 'C_' THEN 'Couples'
+                WHEN segment LIKE 'F_' THEN 'Families'
+	        END);
   
 ALTER TABLE weekly_sales
 MODIFY COLUMN segment varchar(8);
