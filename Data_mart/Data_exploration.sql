@@ -26,11 +26,11 @@ GROUP BY platform;
 -- What is the percentage of sales for Retail vs Shopify for each month?
 SELECT grp.platform, ROUND((grp.group_sales/total.total_sales),2) AS percentage
 FROM (
-	 SELECT platform, SUM(sales) AS group_sales
+     SELECT platform, SUM(sales) AS group_sales
      FROM weekly_sales
      GROUP BY platform) AS grp 
 LEFT JOIN (
-	      SELECT SUM(sales) AS total_sales
+	  SELECT SUM(sales) AS total_sales
           FROM weekly_sales) AS total 
 ON 1 = 1;
 
