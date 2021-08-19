@@ -24,3 +24,7 @@ WHERE duration IN ('NULL', '');
 UPDATE runner_orders 
 SET cancellation = null
 WHERE cancellation IN ('NULL', '');
+
+-- converting data type for pickup_time from varchar to timestamp
+ALTER TABLE runner_orders
+CHANGE COLUMN pickup_time pickup_time DATETIME NULL DEFAULT NULL ;
