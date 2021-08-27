@@ -1,4 +1,4 @@
-## <p align="center">Case Study - Foodie-Fi 🍕🧀🫑 </p>
+## <p align="center">Case Study - Foodie-Fi 🍝🌮🍮 </p>
 <p align='Center'>
    <img width = '250' height='250' src='https://8weeksqlchallenge.com/images/case-study-designs/3.png'
 </p>     
