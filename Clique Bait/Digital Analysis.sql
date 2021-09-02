@@ -64,20 +64,13 @@ ORDER BY product_category;
 
 -- What are the top 3 products by purchases?
 WITH purchased AS (select *, 
-               DENSE_RANK() OVER (PARTITION BY visit_id order by sequence_number) as ranks,
-			   ROW_NUMBER() OVER (PARTITION BY visit_id order by sequence_number DESC) AS row_num
-			   from output 
-               where event_name IN ('Add to Cart', 'Purchase'))
+                   DENSE_RANK() OVER (PARTITION BY visit_id order by sequence_number) as ranks,
+	           ROW_NUMBER() OVER (PARTITION BY visit_id order by sequence_number DESC) AS row_num
+	           from output 
+                   where event_name IN ('Add to Cart', 'Purchase'))
 SELECT Product_id, count(DISTINCT visit_id) AS Purchased
 from purchased where event_name = 'Add to cart' not in (row_num = 1)
 GROUP BY product_id
 ORDER BY Purchased desc
 limit 3;
-
-
-
-
-
-
-
 
