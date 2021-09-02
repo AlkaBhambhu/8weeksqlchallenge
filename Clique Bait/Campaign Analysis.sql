@@ -3,7 +3,7 @@ CREATE TABLE visit_record
 WITH CTE AS(SELECT  e.visit_id, c.campaign_name
             FROM events e 
             JOIN page_hierarchy p on e.page_id = p.page_id 
-			JOIN campaign_identifier c ON p.product_id = c.products
+	    JOIN campaign_identifier c ON p.product_id = c.products
             WHERE (e.event_time BETWEEN c.start_date AND c.end_date)),
     CTE2 AS( SELECT e.visit_id, GROUP_CONCAT(p.product_id) AS cart_products ,GROUP_CONCAT(p.page_name) AS cart_products_name
              FROM events e 
@@ -12,7 +12,7 @@ WITH CTE AS(SELECT  e.visit_id, c.campaign_name
             GROUP BY e.visit_id)
 SELECT DISTINCT u.user_id, e.visit_id, visit_start_time.event_time,
                 SUM(CASE WHEN event_type = 1 THEN 1 ELSE 0 END) OVER (PARTITION BY visit_id) AS page_views,
-			    SUM(CASE WHEN event_type = 2 THEN 1 ELSE 0 END) OVER (PARTITION BY visit_id) AS ecart_adds,
+	        SUM(CASE WHEN event_type = 2 THEN 1 ELSE 0 END) OVER (PARTITION BY visit_id) AS ecart_adds,
                 SUM(CASE WHEN event_type = 3 THEN 1 ELSE 0 END) OVER (PARTITION BY visit_id) AS purchase,
                 CTE.campaign_name,
                 SUM(CASE WHEN event_type = 4 THEN 1 ELSE 0 END) OVER (PARTITION BY visit_id) AS impression,
