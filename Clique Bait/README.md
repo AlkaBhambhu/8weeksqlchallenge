@@ -15,5 +15,8 @@ Clique Bait is an online seafood store. In this case study - you are required to
    
  Complete list of questions are available here: [Case Study Questions](https://8weeksqlchallenge.com/case-study-6/)
    
-   ![ScreenShot](https://raw.github.com/{AlkaBhambhu}/{8weeksqlchallenge}/{main}/{CliqueBait/IMG/Dasboard.png})
+   
+ >## 🎞Solution
+   
+<img src="IMG/Dashboard.png" height="750" alt="Screenshot"/>
 
