@@ -14,4 +14,6 @@ Clique Bait is an online seafood store. In this case study - you are required to
    - Page Hierarchy
    
  Complete list of questions are available here: [Case Study Questions](https://8weeksqlchallenge.com/case-study-6/)
+   
+   ![Alt text](relative/path/to/img.jpg?raw=true "Title")
 
