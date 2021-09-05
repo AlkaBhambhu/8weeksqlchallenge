@@ -1,4 +1,4 @@
-## <p align="center">Case Study - Balanced Tree Clothing Co. 🦑🍤🦪 </p>
+## <p align="center">Case Study - Balanced Tree Clothing Co. 👚👖👕 </p>
 <p align='Center'>
    <img width = '250' height='250' src='https://8weeksqlchallenge.com/images/case-study-designs/7.png'
 </p>     
