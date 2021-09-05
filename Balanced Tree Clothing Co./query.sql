@@ -30,12 +30,12 @@ FROM sales;
 -- What is the percentage split of all transactions for members vs non-members?
 SELECT members_trans.members, ROUND(members_trans.member_transactions*100/total_trans.total_transactions,2) AS percentage 
 FROM(
-	  SELECT members, COUNT(txn_id) AS member_transactions
+    SELECT members, COUNT(txn_id) AS member_transactions
     FROM sales
     GROUP BY members) AS members_trans
 LEFT JOIN(		
 	SELECT COUNT(txn_id) AS total_transactions
-    FROM sales) AS total_trans
+        FROM sales) AS total_trans
 ON 1=1;
 
 -- What is the average revenue for member transactions and non-member transactions?
@@ -73,9 +73,9 @@ Where ranks = 1;
 
 -- What is the total quantity, revenue and discount for each category?
 SELECT p.category_id, 
-	   SUM(s.qty),
+       SUM(s.qty),
        ROUND(SUM(s.qty*s.price - s.qty*s.price*s.discount/100),2) AS Revenue,
-	   ROUND(SUM(s.discount*s.qty*s.price/100),2) AS total_discount
+       ROUND(SUM(s.discount*s.qty*s.price/100),2) AS total_discount
 FROM sales s
 JOIN product_details p
 	ON s.prod_id = p.product_id
@@ -118,13 +118,17 @@ LEFT JOIN (SELECT ROUND(SUM(s.qty*s.price - s.qty*s.price*s.discount/100),2) AS 
 ON 1=1;
 
 -- What is the percentage split of revenue by segment for each category?
-SELECT category_id, segment_id, segment_name, ROUND((Revenue*100/sum(Revenue) OVER (PARTITION BY category_id)),2) AS percentage_split
-FROM (SELECT pd.category_id,pd.segment_id, pd.segment_name,ROUND(SUM(s.qty*s.price - s.qty*s.price*s.discount/100),2) AS Revenue
-       FROM sales s
-       INNER JOIN product_details pd
-       ON s.prod_id = pd.product_id
-       GROUP BY pd.category_id,pd.segment_id, pd.segment_name
-       ORDER BY pd.category_id) Segment_revenue;
+SELECT category_id, 
+       segment_id, 
+       segment_name,
+       ROUND((Revenue*100/sum(Revenue) OVER (PARTITION BY category_id)),2) AS percentage_split
+FROM (SELECT pd.category_id,pd.segment_id, pd.segment_name,
+      ROUND(SUM(s.qty*s.price - s.qty*s.price*s.discount/100),2) AS Revenue
+      FROM sales s
+      INNER JOIN product_details pd
+      ON s.prod_id = pd.product_id
+      GROUP BY pd.category_id,pd.segment_id, pd.segment_name
+      ORDER BY pd.category_id) Segment_revenue;
  
 -- What is the total transaction “penetration” for each product? 
 SELECT prod_id, ROUND((product_transaction*100/total_transaction),2) AS penetration_rate
@@ -132,7 +136,7 @@ FROM (SELECT prod_id, COUNT(txn_id) AS product_transaction
       FROM sales 
       GROUP BY prod_id) product_txn
 LEFT JOIN (SELECT COUNT(DISTINCT txn_id) AS total_transaction
-		   FROM sales) total_txn
+           FROM sales) total_txn
 ON 1=1
 ORDER BY penetration_rate;
 
